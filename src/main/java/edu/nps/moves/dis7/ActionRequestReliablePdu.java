@@ -23,12 +23,12 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
     /**
      * padding
      */
-    protected int pad1;
+    protected short pad1;
 
     /**
      * padding
      */
-    protected short pad2;
+    protected int pad2;
 
     /**
      * request ID
@@ -39,6 +39,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
      * request ID
      */
     protected long actionID;
+
+    /**
+     * padding 3
+     */
+    protected long pad3;
 
     /**
      * Fixed datum record count
@@ -71,10 +76,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
 
         marshalSize = super.getMarshalledSize();
         marshalSize = marshalSize + 1;  // requiredReliabilityService
-        marshalSize = marshalSize + 2;  // pad1
-        marshalSize = marshalSize + 1;  // pad2
+        marshalSize = marshalSize + 1;  // pad1
+        marshalSize = marshalSize + 2;  // pad2
         marshalSize = marshalSize + 4;  // requestID
         marshalSize = marshalSize + 4;  // actionID
+        marshalSize = marshalSize + 4;  // pad3
         marshalSize = marshalSize + 4;  // numberOfFixedDatumRecords
         marshalSize = marshalSize + 4;  // numberOfVariableDatumRecords
         for (int idx = 0; idx < fixedDatumRecords.size(); idx++) {
@@ -97,19 +103,19 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         return requiredReliabilityService;
     }
 
-    public void setPad1(int pPad1) {
+    public void setPad1(short pPad1) {
         pad1 = pPad1;
     }
 
-    public int getPad1() {
+    public short getPad1() {
         return pad1;
     }
 
-    public void setPad2(short pPad2) {
+    public void setPad2(int pPad2) {
         pad2 = pPad2;
     }
 
-    public short getPad2() {
+    public int getPad2() {
         return pad2;
     }
 
@@ -127,6 +133,13 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
 
     public long getActionID() {
         return actionID;
+    }
+    public void setPad3(long pPad3){
+        pad3 = pPad3;
+    }
+
+    public long getPad3(){
+        return pad3;
     }
 
     public long getNumberOfFixedDatumRecords() {
@@ -179,10 +192,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         super.marshal(dos);
         try {
             dos.writeByte((byte) requiredReliabilityService);
-            dos.writeShort((short) pad1);
-            dos.writeByte((byte) pad2);
+            dos.writeByte((byte) pad1);
+            dos.writeShort((short) pad2);
             dos.writeInt((int) requestID);
             dos.writeInt((int) actionID);
+            dos.writeInt((int) pad3);
             dos.writeInt((int) fixedDatumRecords.size());
             dos.writeInt((int) variableDatumRecords.size());
 
@@ -207,10 +221,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
 
         try {
             requiredReliabilityService = (short) dis.readUnsignedByte();
-            pad1 = (int) dis.readUnsignedShort();
-            pad2 = (short) dis.readUnsignedByte();
+            pad1 = (short) dis.readUnsignedByte();
+            pad2 = (int) dis.readUnsignedShort();
             requestID = dis.readInt();
             actionID = dis.readInt();
+            pad3 = dis.readInt();
             numberOfFixedDatumRecords = dis.readInt();
             numberOfVariableDatumRecords = dis.readInt();
             for (int idx = 0; idx < numberOfFixedDatumRecords; idx++) {
@@ -243,10 +258,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
     public void marshal(java.nio.ByteBuffer buff) {
         super.marshal(buff);
         buff.put((byte) requiredReliabilityService);
-        buff.putShort((short) pad1);
-        buff.put((byte) pad2);
+        buff.put((byte) pad1);
+        buff.putShort(short) pad2);
         buff.putInt((int) requestID);
         buff.putInt((int) actionID);
+        buff.putInt((int)pad3);
         buff.putInt((int) fixedDatumRecords.size());
         buff.putInt((int) variableDatumRecords.size());
 
@@ -274,10 +290,11 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         super.unmarshal(buff);
 
         requiredReliabilityService = (short) (buff.get() & 0xFF);
-        pad1 = (int) (buff.getShort() & 0xFFFF);
-        pad2 = (short) (buff.get() & 0xFF);
+        pad1 = (short) (buff.get() & 0xFF);
+        pad2 = (int) (buff.getShort() & 0xFFFF);
         requestID = buff.getInt();
         actionID = buff.getInt();
+        pad3 = buff.getInt();
         numberOfFixedDatumRecords = buff.getInt();
         numberOfVariableDatumRecords = buff.getInt();
         for (int idx = 0; idx < numberOfFixedDatumRecords; idx++) {
@@ -341,6 +358,10 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         if (!(actionID == rhs.actionID)) {
             ivarsEqual = false;
         }
+        if(!(pad3 == rhs.pad3)){
+            ivarsEqual = false;
+        }
+        
         if (!(numberOfFixedDatumRecords == rhs.numberOfFixedDatumRecords)) {
             ivarsEqual = false;
         }
