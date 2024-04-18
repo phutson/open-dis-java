@@ -259,7 +259,7 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         super.marshal(buff);
         buff.put((byte) requiredReliabilityService);
         buff.put((byte) pad1);
-        buff.putShort(short) pad2);
+        buff.putShort((short) pad2);
         buff.putInt((int) requestID);
         buff.putInt((int) actionID);
         buff.putInt((int)pad3);
@@ -361,7 +361,7 @@ public class ActionRequestReliablePdu extends SimulationManagementWithReliabilit
         if(!(pad3 == rhs.pad3)){
             ivarsEqual = false;
         }
-        
+
         if (!(numberOfFixedDatumRecords == rhs.numberOfFixedDatumRecords)) {
             ivarsEqual = false;
         }
